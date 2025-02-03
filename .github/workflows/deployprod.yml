@@ -62,16 +62,32 @@ jobs:
                     echo " "
                     echo "  🦅  SSH Ready! Welcome to RunClub CLI!  🦅 "
                     echo "------------------------------------------"
-                    echo "        \   \   /   /"
-                    echo "         \   \_/   /"
-                    echo "          \       /"
-                    echo "          (  - -  )   <-- Majestic Eagle"
-                    echo "         /   ---   \\"
-                    echo "        /  /     \\  \\"
-                    echo "       /__/       \\__\\"
+                    echo "        \   \   /   /
+                    echo "         \   \_/   /
+                    echo "          \       /
+                    echo "          (  - -  )   
+                    echo "         /   ---   \\
+                    echo "        /  /     \\  \\
+                    echo "       /__/       \\__\\
                     echo "------------------------------------------"
                     echo "  RunClub CLI setup complete! 🚀 Fly high!"
                   else
                     echo "❌ SSH setup failed! Check your credentials and VM status."
                     exit 1
                   fi
+
+            - name: SSH into VM and deploy
+              uses: appleboy/ssh-action@v0.1.6
+              with:
+                  host: ${{ secrets.AZURE_VM_IP }}
+                  username: azureuser
+                  key: ${{ secrets.AZURE_PEM_PRIVATE_KEY }}
+                  script: |
+                      echo "Running Deployment of chat app to k8s cluster..."
+                      cd chat
+                      git pull origin main
+                      cd k8s
+                      echo "done for now!"
+
+            - name: Sign out of Azure
+              run: az logout
