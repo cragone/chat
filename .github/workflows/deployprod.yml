@@ -63,7 +63,7 @@ jobs:
               with:
                   host: ${{ secrets.AZURE_VM_IP }}
                   username: azureuser
-                  key: ${{ secrets.AZURE_PEM_PRIVATE_KEY }}
+                  key: ${{ secrets.PROD_PEM_KEY }}
                   script: |
                       echo "Running Deployment of chat app to k8s cluster..."
                       cd chat
