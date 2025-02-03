@@ -46,7 +46,7 @@ jobs:
                   password: ${{ secrets.REGISTRY_PASSWORD }}
 
             - name: "Push docker image"
-              working-directory: ./server
+              working-directory: .
               run: |
                   docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/chat-prod:${{ env.sha_short }}
                   docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/chat-prod:${{ env.sha_short }}
