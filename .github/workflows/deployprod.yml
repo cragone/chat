@@ -32,3 +32,8 @@ jobs:
             - name: Check variable
               run: |
                   echo "SHA short: ${{ env.sha_short }}"
+
+            - name: "Login via Azure CLI"
+              uses: azure/login@v2
+              with:
+                  creds: ${{ secrets.AZURE_CREDENTIALS }}
