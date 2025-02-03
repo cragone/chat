@@ -57,24 +57,6 @@ jobs:
                   echo "${{ secrets.PROD_PEM_KEY }}" > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
                   ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} > ~/.ssh/known_hosts
-                   # Check if SSH setup was successful
-                  if [ $? -eq 0 ]; then
-                    echo " "
-                    echo "  🦅  SSH Ready! Welcome to RunClub CLI!  🦅 "
-                    echo "------------------------------------------"
-                    echo "        \   \   /   /
-                    echo "         \   \_/   /
-                    echo "          \       /
-                    echo "          (  - -  )   
-                    echo "         /   ---   \\
-                    echo "        /  /     \\  \\
-                    echo "       /__/       \\__\\
-                    echo "------------------------------------------"
-                    echo "  RunClub CLI setup complete! 🚀 Fly high!"
-                  else
-                    echo "❌ SSH setup failed! Check your credentials and VM status."
-                    exit 1
-                  fi
 
             - name: SSH into VM and deploy
               uses: appleboy/ssh-action@v0.1.6
