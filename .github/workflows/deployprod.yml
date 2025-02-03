@@ -44,3 +44,34 @@ jobs:
                   login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
                   username: ${{ secrets.REGISTRY_USERNAME }}
                   password: ${{ secrets.REGISTRY_PASSWORD }}
+
+            - name: "Push docker image"
+              working-directory: ./server
+              run: |
+                  docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/chat-prod:${{ env.sha_short }}
+                  docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/chat-prod:${{ env.sha_short }}
+
+            - name: Set up SSH key
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.PROD_PEM_KEY }}" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+                  ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} > ~/.ssh/known_hosts
+                   # Check if SSH setup was successful
+                  if [ $? -eq 0 ]; then
+                    echo " "
+                    echo "  🦅  SSH Ready! Welcome to RunClub CLI!  🦅 "
+                    echo "------------------------------------------"
+                    echo "        \   \   /   /"
+                    echo "         \   \_/   /"
+                    echo "          \       /"
+                    echo "          (  - -  )   <-- Majestic Eagle"
+                    echo "         /   ---   \\"
+                    echo "        /  /     \\  \\"
+                    echo "       /__/       \\__\\"
+                    echo "------------------------------------------"
+                    echo "  RunClub CLI setup complete! 🚀 Fly high!"
+                  else
+                    echo "❌ SSH setup failed! Check your credentials and VM status."
+                    exit 1
+                  fi
