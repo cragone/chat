@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mychatapp
+  namespace: chat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mychatapp
+  template:
+    metadata:
+      labels:
+        app: mychatapp
+    spec:
+      containers:
+      - name: mychatapp
+        image: placeholder
+        imagePullPolicy: Always
+        ports:
+          - containerPorts: 80
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      imagePullSecrets:
+        - name: azure-acr-creds
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mychatapp-service
+  namespace: chat
+spec:
+  selector:
+    app: mychatapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
