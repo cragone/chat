@@ -71,7 +71,7 @@ jobs:
                       cd k8s
 
                       sudo kubectl apply -f deployment.yaml -n chat
-                      sudo k3 kubect set image deployment/mychatapp mychatapp=${{ secrets.REGISTRY_LOGIN_SERVER }}/chat-prod:${{ env.sha_short }} -n chat
+                      sudo k3s kubect set image deployment/mychatapp mychatapp=${{ secrets.REGISTRY_LOGIN_SERVER }}/chat-prod:${{ env.sha_short }} -n chat
                       echo "done for now!"
 
             - name: Sign out of Azure
