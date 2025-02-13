@@ -63,12 +63,15 @@ jobs:
               with:
                   host: ${{ secrets.AZURE_VM_IP }}
                   username: azureuser
-                  key: ${{ secrets.AZURE_PEM_PRIVATE_KEY }}
+                  key: ${{ secrets.PROD_PEM_KEY }}
                   script: |
                       echo "Running Deployment of chat app to k8s cluster..."
                       cd chat
                       git pull origin main
                       cd k8s
+
+                      sudo kubectl apply -f deployment.yaml -n chat
+                      sudo k3 kubect set image deployment/mychatapp mychatapp=${{ secrets.REGISTRY_LOGIN_SERVER }}/chat-prod:${{ env.sha_short }} -n chat
                       echo "done for now!"
 
             - name: Sign out of Azure
